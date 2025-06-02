@@ -22,23 +22,26 @@ jobs:
         
     - name: Build and Push Frontend
       run: |
-        # Build frontend Docker image
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:latest ./frontend
+        # Build frontend Docker image using production Dockerfile
+        docker build -f ./frontend/Dockerfile.prod -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:latest ./frontend
         # Push to Docker Hub
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:latest
         
     - name: Build and Push Backend
       run: |
-        # Build backend Docker image  
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:latest ./backend
+        # Build backend Docker image using production Dockerfile
+        docker build -f ./backend/Dockerfile.prod -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:latest ./backend
         # Push to Docker Hub
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:latest
         
     # Optional: DB image if not using Render's managed DB
     - name: Build and Push DB
       run: |
-        # Build database Docker image if Dockerfile exists
-        if [ -f "./database/Dockerfile" ]; then
+        # Check for database Dockerfiles
+        if [ -f "./database/Dockerfile.prod" ]; then
+          docker build -f ./database/Dockerfile.prod -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-db:latest ./database
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/blog-db:latest
+        elif [ -f "./database/Dockerfile" ]; then
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/blog-db:latest ./database
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/blog-db:latest
         else
