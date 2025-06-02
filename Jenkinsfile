@@ -26,7 +26,7 @@ pipeline {
                     passwordVariable: 'GITHUB_TOKEN'
                 )]) {
                     sh '''
-                        git remote set-url origin https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Kanishapradhan13/DSO101_Final-Project
+                        git remote set-url origin https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Kanishapradhan13/DSO101_Final-Project.git
                         git push origin HEAD:main
                     '''
                 }
