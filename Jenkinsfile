@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         // Store GitHub credentials in Jenkins Secrets
-        GITHUB_CREDS = credentials('github credentials')
+        GITHUB_CREDS = credentials('1')
     }
     stages {
         stage('Check Commit Message') {
@@ -21,7 +21,7 @@ pipeline {
         stage('Push to GitHub') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'github credentials',
+                    credentialsId: '1',
                     usernameVariable: 'GITHUB_USER',
                     passwordVariable: 'GITHUB_TOKEN'
                 )]) {
